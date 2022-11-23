@@ -1,26 +1,38 @@
 <script setup>
-import { ref, onMounted } from 'vue'
-import { sync, paginate, getCategoryOptionsList,getFilteredListByCategory, Storage } from '../composables/api.js'
-//import { sync, paginate, categoryFilter } from '../composables/api.js'
+import { ref, watch, onMounted } from 'vue'
+import { sync, paginate, getCategoryOptionsList, getFilteredListByCategory, Storage } from '../composables/api.js'
+const OptionsList = ref(),
+  selected = ref()
 
-const OptionsList = ref()
+watch(selected, () => {
+  getFilteredListByCategory(selected.value)
+})
 
 onMounted(async () => {
   await sync()
   paginate(30)
-  OptionsList.value = getCategoryOptionsList()
-  //store.value = Storage
+  getCategoryOptionsList()
+  getFilteredListByCategory("all")
+  selected.value = "all"
 })
 </script>
 
 <template>
+  <select
+    class="block w-52 text-gray-700 py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+    v-model="selected"
+    autofocus>
+    <option v-for="Category in Storage.CategoryOptionsList" :key="Category" :value="Category"
+      :selected="selected && Category == selected.value">
+      {{ Category }}
+    </option>
+  </select>
+
+  <br>
+
   {{ Storage.paginationPagesIndexes }}
   <pre style="width:500px; text-align:left;">
-    {{OptionsList}}
-    {{getFilteredListByCategory("Vehicle")}}
-    <!-- {{ Storage.paginatedList }} -->
-
-
+    {{ Storage.ListByCategory }}
   </pre>
 </template>
 

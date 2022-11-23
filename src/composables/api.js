@@ -1,7 +1,13 @@
 ﻿const { VITE_URL_PUBLIC_APIS_LIST, VITE_PAGINATION_POSITIONS_PER_PAGE } = import.meta.env;
 import { reactive } from 'vue';
 
-export const Storage = reactive({});
+export const Storage = reactive({
+  rawList: '',
+  paginatedList: '',
+  paginationPagesIndexes: '',
+  CategoryOptionsList: '',
+  ListByCategory: '',
+});
 
 export const sync = async () => {
   const res = await fetch(`${VITE_URL_PUBLIC_APIS_LIST}`);
@@ -32,17 +38,16 @@ export const paginate = (POS_PER_PAGE) => {
 
 export const getCategoryOptionsList = () => {
   const distinct = [...new Set([...Storage?.rawList?.entries.map((element) => element.Category)])];
+  const distinctWithAll = ["all",...distinct]
 
-  //Storage.Category = { OptionsList: distinct };
-  return distinct;
+  Storage.CategoryOptionsList = distinctWithAll;
+  return distinctWithAll;
 };
 
 export const getFilteredListByCategory = (Category) => {
+  const ListByCategory = Category == "all" ? Storage?.rawList.entries : Storage?.rawList?.entries.filter((element) => element.Category == Category) ;
 
-  const ListByCategory = Storage?.rawList?.entries.filter(element => element.Category == Category);
+  Storage.ListByCategory = ListByCategory;
 
-  //Storage.Category = { ...Category, ListByCategory }
-
-  return ListByCategory
+  return ListByCategory;
 };
-
