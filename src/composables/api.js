@@ -1,7 +1,7 @@
 ﻿const { VITE_URL_PUBLIC_APIS_LIST, VITE_PAGINATION_POSITIONS_PER_PAGE } = import.meta.env;
-import { ref } from 'vue';
+import { reactive } from 'vue';
 
-export const Storage = {};
+export const Storage = reactive({});
 
 export const sync = async () => {
   const res = await fetch(`${VITE_URL_PUBLIC_APIS_LIST}`);
@@ -13,7 +13,7 @@ export const sync = async () => {
 export const paginate = (POS_PER_PAGE) => {
   const pos_per_page = POS_PER_PAGE || VITE_PAGINATION_POSITIONS_PER_PAGE;
 
-  const paginatedList = Storage?.rawList?.entries?.reduce((prevLoop, element, index, arr) => {
+  const paginatedList = Storage?.rawList?.entries.reduce((prevLoop, element, index, arr) => {
     const chunkIndex = Math.floor(index / pos_per_page);
 
     if (!prevLoop[chunkIndex]) {
@@ -28,4 +28,12 @@ export const paginate = (POS_PER_PAGE) => {
   Storage.paginationPagesIndexes = Object.keys(paginatedList);
 
   return;
+};
+
+export const categoryFilter = () => {
+
+  const distinct =[... new Set([...Storage?.rawList?.entries.map(element => element.Category)]) ]
+  console.log("🚀 ~ file: api.js ~ line 36 ~ categoryFilter ~ distinct", distinct)
+
+  return distinct;
 };

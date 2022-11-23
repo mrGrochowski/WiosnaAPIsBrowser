@@ -1,20 +1,22 @@
 <script setup>
 import { ref, onMounted } from 'vue'
-import { sync, paginate, Storage } from '../composables/api.js'
+import { sync, paginate, categoryFilter, Storage } from '../composables/api.js'
+//import { sync, paginate, categoryFilter } from '../composables/api.js'
 
 const store = ref([])
 
 onMounted(async () => {
   await sync()
   paginate(30)
-  store.value = Storage
+  categoryFilter()
+  //store.value = Storage
 })
 </script>
 
 <template>
-  {{ store.paginationPagesIndexes }}
+  {{ Storage.paginationPagesIndexes }}
   <pre style="width:500px; text-align:left;">
-    {{ store.paginatedList }}
+    {{ Storage.paginatedList }}
   </pre>
 </template>
 
