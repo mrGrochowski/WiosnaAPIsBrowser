@@ -30,10 +30,19 @@ export const paginate = (POS_PER_PAGE) => {
   return;
 };
 
-export const categoryFilter = () => {
+export const getCategoryOptionsList = () => {
+  const distinct = [...new Set([...Storage?.rawList?.entries.map((element) => element.Category)])];
 
-  const distinct =[... new Set([...Storage?.rawList?.entries.map(element => element.Category)]) ]
-  console.log("🚀 ~ file: api.js ~ line 36 ~ categoryFilter ~ distinct", distinct)
-
+  //Storage.Category = { OptionsList: distinct };
   return distinct;
 };
+
+export const getFilteredListByCategory = (Category) => {
+
+  const ListByCategory = Storage?.rawList?.entries.filter(element => element.Category == Category);
+
+  //Storage.Category = { ...Category, ListByCategory }
+
+  return ListByCategory
+};
+
