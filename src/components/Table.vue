@@ -45,12 +45,4 @@ const props = defineProps({
     display: none;
   }
 }
-
-td:not(:last-child) {
-  border-bottom: 0;
-}
-
-th:not(:last-child) {
-  border-bottom: 2px solid rgba(0, 0, 0, .1);
-}
 </style>
